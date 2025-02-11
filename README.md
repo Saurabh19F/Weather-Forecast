@@ -1,2 +1,2 @@
-# PRODIGY_WD_05.github.io
-https://saurabh19f.github.io/PRODIGY_WD_05/
+# Weather Forecast Api
+https://saurabh19f.github.io/Weather-Forecast/
