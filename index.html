@@ -12,33 +12,56 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg-light: rgba(255, 255, 255, 0.1);
+      --bg-dark: rgba(0, 0, 0, 0.6);
+      --text-light: #ffffff;
+      --text-dark: #222222;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      height: 100vh;
-      background: url("images/IMG20240803184502.jpg") no-repeat center center fixed;
-      background-size: cover;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
+      color: var(--text-light);
+      background: url("images/IMG20240803184502.jpg") no-repeat center center fixed;
+      background-size: cover;
+      transition: background-color 0.5s ease;
+    }
+
+    body.light-mode {
+      color: var(--text-light);
+    }
+
+    body.dark-mode {
+      background: #111;
+      color: var(--text-light);
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--bg-light);
       border-radius: 20px;
-      padding: 40px 30px;
+      padding: 35px;
       max-width: 420px;
       width: 90%;
       text-align: center;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
       animation: fadeIn 1s ease-in-out;
     }
 
+    body.dark-mode .container {
+      background: var(--bg-dark);
+    }
+
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       margin-bottom: 25px;
-      color: #fefefe;
+      background: linear-gradient(to right, #ff7b00, #ff2d55);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     input[type="text"] {
@@ -47,40 +70,64 @@
       border: none;
       border-radius: 50px;
       font-size: 1rem;
-      text-align: center;
       background-color: rgba(255, 255, 255, 0.8);
       color: #333;
       margin-bottom: 15px;
-      transition: 0.3s ease;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    input[type="text"]:focus {
-      box-shadow: 0 0 10px #ff7b00;
-      outline: none;
-    }
-
-    button {
-      padding: 12px 25px;
-      background: linear-gradient(135deg, #ff7b00, #ff5500);
+    button[type="submit"] {
+      padding: 12px 30px;
+      background: linear-gradient(270deg, #ff7b00, #ff2d55, #6a11cb);
+      background-size: 600% 600%;
+      animation: gradientFlow 4s ease infinite;
       color: white;
       border: none;
       border-radius: 50px;
       font-size: 1rem;
       cursor: pointer;
-      transition: 0.3s ease;
+      margin-top: 10px;
+      transition: transform 0.3s ease;
     }
 
-    button:hover {
-      box-shadow: 0 0 15px rgba(255, 123, 0, 0.6);
+    button[type="submit"]:hover {
+      transform: scale(1.05);
+    }
+
+    #toggle-theme {
+      padding: 8px 16px;
+      border-radius: 25px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #toggle-theme:hover {
+      opacity: 0.85;
     }
 
     .weather-card {
-      background: rgba(255, 255, 255, 0.9);
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 15px;
       padding: 25px;
-      margin-top: 30px;
-      color: #222;
-      animation: slideUp 0.8s ease;
+      color: var(--text-dark);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-mode .weather-card {
+      background: #333333ee;
+      color: var(--text-light);
+    }
+
+    .weather-card h2 {
+      font-size: 1.7rem;
+      color: #ff3d5a;
+      margin-bottom: 10px;
     }
 
     .weather-card img {
@@ -88,15 +135,9 @@
       margin-bottom: 15px;
     }
 
-    .weather-card h2 {
-      margin-bottom: 10px;
-      font-size: 1.6rem;
-      color: #ff5f6d;
-    }
-
     .weather-card p {
-      margin: 6px 0;
       font-size: 1rem;
+      margin: 6px 0;
     }
 
     @keyframes fadeIn {
@@ -104,14 +145,16 @@
       to { opacity: 1; }
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
   </style>
 </head>
-<body>
+<body class="light-mode">
   <div class="container">
+    <button id="toggle-theme">🌙 Toggle Theme</button>
     <h1>🌤 Weather App</h1>
     <form id="weather-form">
       <input type="text" id="location" placeholder="Enter location" required />
@@ -157,25 +200,34 @@
       const country = data.sys.country;
       const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
       const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString();
-      const coords = `${data.coord.lat}°N, ${data.coord.lon}°E`;
+      const coords = `${data.coord.lat.toFixed(4)}°N, ${data.coord.lon.toFixed(4)}°E`;
       const visibility = data.visibility;
 
       weatherInfo.innerHTML = `
         <div class="weather-card">
-          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon">
+          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon" />
           <h2>${city}, ${country}</h2>
-          <p><strong>${description}</strong></p>
-          <p>🌡 Temp: ${temp}°C</p>
-          <p>💧 Humidity: ${humidity}%</p>
-          <p>🌬 Wind: ${wind} m/s</p>
-          <p>📍 Coords: ${coords}</p>
-          <p>🔆 Sunrise: ${sunrise}</p>
-          <p>🌇 Sunset: ${sunset}</p>
-          <p>🔎 Visibility: ${visibility} m</p>
-          <p>📊 Pressure: ${pressure} hPa</p>
+          <p>🌤 <strong>${description}</strong></p>
+          <p>🌡 <strong>Temp:</strong> ${temp}°C</p>
+          <p>💧 <strong>Humidity:</strong> ${humidity}%</p>
+          <p>🌬 <strong>Wind:</strong> ${wind} m/s</p>
+          <p>📍 <strong>Coords:</strong> ${coords}</p>
+          <p>🔆 <strong>Sunrise:</strong> ${sunrise}</p>
+          <p>🌇 <strong>Sunset:</strong> ${sunset}</p>
+          <p>🔎 <strong>Visibility:</strong> ${visibility} m</p>
+          <p>📊 <strong>Pressure:</strong> ${pressure} hPa</p>
         </div>
       `;
     }
+
+    const themeButton = document.getElementById('toggle-theme');
+    const body = document.body;
+
+    themeButton.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      body.classList.toggle('light-mode');
+      themeButton.textContent = body.classList.contains('dark-mode') ? '☀️ Toggle Theme' : '🌙 Toggle Theme';
+    });
   </script>
 </body>
 </html>
