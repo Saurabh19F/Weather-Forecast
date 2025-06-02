@@ -1,228 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Quicksand', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: url("images/IMG20240803184502.jpg") no-repeat center center fixed;
-            background-size: cover;
-            overflow: hidden;
-            color: #fff;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: url("images/IMG20240803184502.jpg") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
 
-        .container {
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 1s ease-in-out;
-        }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px 30px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease-in-out;
+    }
 
-        h1 {
-            color: #fff;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            animation: slideDown 1s ease-out;
-        }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      color: #fefefe;
+    }
 
-        input[type="text"] {
-            padding: 12px;
-            width: 80%;
-            margin: 10px 0;
-            border: none;
-            border-radius: 50px;
-            outline: none;
-            font-size: 1rem;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.8);
-            color: #333;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
-            animation: inputFocus 0.3s ease;
-        }
+    input[type="text"] {
+      padding: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #333;
+      margin-bottom: 15px;
+      transition: 0.3s ease;
+    }
 
-        input[type="text"]:focus {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
+    input[type="text"]:focus {
+      box-shadow: 0 0 10px #ff7b00;
+      outline: none;
+    }
 
-        button {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 50px;
-            background-color: #ff7b00;
-            color: #fff;
-            cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 1s ease-in-out;
-        }
+    button {
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #ff7b00, #ff5500);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
 
-        button:hover {
-            background-color: #ff5500;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
+    button:hover {
+      box-shadow: 0 0 15px rgba(255, 123, 0, 0.6);
+    }
 
-        #weather-info {
-            margin-top: 30px;
-            animation: fadeIn 1.5s ease-in-out;
-        }
+    .weather-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 25px;
+      margin-top: 30px;
+      color: #222;
+      animation: slideUp 0.8s ease;
+    }
 
-        .weather-card {
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            max-width: 300px;
-            width: 100%;
-            animation: slideUp 1s ease-out;
-        }
+    .weather-card img {
+      width: 80px;
+      margin-bottom: 15px;
+    }
 
-        .weather-card h2 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: #ff5f6d;
-        }
+    .weather-card h2 {
+      margin-bottom: 10px;
+      font-size: 1.6rem;
+      color: #ff5f6d;
+    }
 
-        .weather-card p {
-            margin: 10px 0;
-            font-size: 1rem;
-        }
+    .weather-card p {
+      margin: 6px 0;
+      font-size: 1rem;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes inputFocus {
-            from {
-                transform: scale(1);
-            }
-            to {
-                transform: scale(1.05);
-            }
-        }
-    </style>
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Weather App</h1>
-        <form id="weather-form">
-            <input type="text" id="location" placeholder="Enter location" required>
-            <button type="submit">Get Weather</button>
-        </form>
-        <div id="weather-info"></div>
-    </div>
+  <div class="container">
+    <h1>🌤 Weather App</h1>
+    <form id="weather-form">
+      <input type="text" id="location" placeholder="Enter location" required />
+      <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-info"></div>
+  </div>
 
-    <script>
-        document.getElementById('weather-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const location = document.getElementById('location').value;
-            console.log(location);
-            fetchWeather(location);
+  <script>
+    document.getElementById('weather-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const location = document.getElementById('location').value;
+      fetchWeather(location);
+    });
+
+    function fetchWeather(location) {
+      const apiKey = "1ff3b7ff6660b458ebed90c3161c8b03";
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.cod === 200) {
+            displayWeather(data);
+          } else {
+            document.getElementById('weather-info').innerHTML = `<p style="color: #fefefe;">Location not found. Try again.</p>`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
         });
+    }
 
-        function fetchWeather(location) 
-        {
-            const apiKey = "1ff3b7ff6660b458ebed90c3161c8b03";
-            const url = "https://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=1ff3b7ff6660b458ebed90c3161c8b03&units=metric&units=imperial"
-            console.log(url);
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.cod === 200) {
-                        displayWeather(data);
-                    } else {
-                        document.getElementById('weather-info').innerHTML = `<p>Location not found. Please try again.</p>`;
-                    }
-                })
-                .catch(error => console.error('Error fetching weather data:', error));
-        }
+    function displayWeather(data) {
+      const weatherInfo = document.getElementById('weather-info');
+      const icon = data.weather[0].icon;
+      const description = data.weather[0].description;
+      const temp = data.main.temp;
+      const humidity = data.main.humidity;
+      const wind = data.wind.speed;
+      const pressure = data.main.pressure;
+      const city = data.name;
+      const country = data.sys.country;
+      const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+      const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString();
+      const coords = `${data.coord.lat}°N, ${data.coord.lon}°E`;
+      const visibility = data.visibility;
 
-        function displayWeather(data) 
-        {
-            const weatherInfo = document.getElementById('weather-info');
-            const temp = data.main.temp;
-            const weather = data.weather[0].description;
-            const location = data.name;
-            const city = data.sys.country;
-            const humidity = data.main.humidity;
-            const wind = data.wind.speed;
-            const windGust = data.wind.gust;
-            const pressure = data.main.pressure;
-            const pressureGust = data.main.pressureGust;
-            const sunrise = data.sunrise;
-            const sunset = data.sunset; 
-            const sunriseTime = new Date(sunrise * 1000).toLocaleTimeString('en-IN', {hour12: true, minute12: true});
-            const sunsetTime = new Date(sunset * 1000).toLocaleTimeString('en-IN', {hour12: true, minute12: true});
-            const altitude = data.coord.lat + "°N, " + data.coord.lon + "°E";
-            const visibility = data.visibility;
-            const moon = data.moonPhase;
-            const moonrise = data.moonrise;
-            const moonset = data.moonset;
-        
-
-
-
-            weatherInfo.innerHTML = 
-            `<div class="weather-card">
-                    <h2>${location}</h2>
-                    <p><strong>City:</strong> ${city}</p>
-                    <p><strong>Temperature:</strong> ${temp}°C</p>
-                    <p><strong>Conditions:</strong> ${weather}</p>
-                    <p><strong>Humidity:</strong> ${humidity}%</p>
-                    <p><strong>Wind Speed:</strong> ${wind} m/s</p>
-                    <p><strong>Pressure:</strong> ${pressure} hPa</p>
-                    <p><strong>Coordinates:</strong> ${altitude}</p>
-                    <p><strong>Last updated:</strong> ${new Date().toLocaleString('en-IN', {hour12: true})}</p>
-                    <p><strong>Visibility:</strong> ${visibility} m</p>
-                   
-                    
-                    </div>`;
-        }
-    </script>
-</body>
+      weatherInfo.innerHTML = `
+        <div class="weather-card">
+          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon">
+          <h2>${city}, ${country}</h2>
+          <p><strong>${description}</strong></p>
+          <p>🌡 Temp: ${temp}°C</p>
+          <p>💧 Humidity: ${humidity}%</p>
+          <p>🌬 Wind: ${wind} m/s</p>
+          <p>📍 Coords: ${coords}</p>
+          <p>🔆 Sunrise: ${sunrise}</p>
+          <p>🌇 Sunset: ${sunset}</p>
+          <p>🔎 Visibility: ${visibility} m</p>
+          <p>📊 Pressure: ${pressure} hPa</p>
+        </div>
+      `;
+    }
+  </script>
 </body>
 </html>
